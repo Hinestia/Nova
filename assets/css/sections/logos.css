@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Лента логотипов: бесконечный marquee, монохром → цвет на hover,
+   края растворяются маской.
+   ========================================================================== */
+
+.logos__title {
+  margin-bottom: 24px;
+  text-align: center;
+  font: 500 var(--fs-cap)/1.4 var(--ff-b);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+@media (hover: hover) { .marquee__track:hover { animation-play-state: paused; } }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 clamp(24px, 3.5vw, 56px);
+  font: 700 clamp(18px, 1.6vw, 26px)/1 var(--ff-h);
+  letter-spacing: -.03em;
+  color: var(--text2);
+  white-space: nowrap;
+  transition: color .3s;
+}
+.brand::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: var(--shape, 50%);
+  background: currentColor;
+  transform: var(--shape-tf, none);
+}
+@media (hover: hover) { .brand:hover { color: var(--brand-c); } }

@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Bento-сетка возможностей: 6 карточек-мини-демо
+   ПК — 6 колонок, планшет — 2, смартфон — 1.
+   ========================================================================== */
+
+.bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gut);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(20px, 2vw, 32px);
+  border-radius: var(--r-xl);
+  transition: transform .3s var(--ease);
+}
+.card > *:not(.spotlight) { position: relative; }
+
+.card__head { display: flex; flex-direction: column; gap: 8px; }
+.card__title { font: 700 var(--fs-card-h)/1.2 var(--ff-h); letter-spacing: -.03em; }
+.card__text { max-width: 40ch; font: 400 var(--fs-body)/1.6 var(--ff-b); color: var(--text2); }
+
+/* Цвет пятна у каждой карточки */
+.card--chat  { --spot-c: rgba(124, 92, 255, .22); min-height: 420px; }
+.card--chart { --spot-c: rgba(61, 214, 255, .2); }
+.card--tasks { --spot-c: rgba(255, 92, 170, .18); }
+.card--tr    { --spot-c: rgba(61, 214, 255, .2); }
+.card--meet  { --spot-c: rgba(124, 92, 255, .22); }
+.card--auto  { --spot-c: rgba(255, 92, 170, .18); }
+
+/* ---------- Чат ---------- */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+}
+.chat__channel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font: 500 13px/1 var(--ff-b);
+  color: var(--text2);
+}
+.chat__channel::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+
+.bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  font: 400 15px/1.45 var(--ff-b);
+}
+.bubble--user {
+  align-self: flex-end;
+  border-radius: 18px 18px 4px 18px;
+  background: var(--glass-b);
+  opacity: 0;
+  transform: translateY(10px) scale(.96);
+  transition: opacity .4s var(--ease), transform .5s var(--spring);
+}
+.bubble--user.is-shown { opacity: 1; transform: none; }
+.bubble--bot {
+  max-width: 85%;
+  border-radius: 18px 18px 18px 4px;
+  background: rgba(124, 92, 255, .14);
+  border: 1px solid rgba(124, 92, 255, .3);
+  line-height: 1.5;
+}
+.chat__row { display: flex; align-items: flex-end; gap: 10px; min-height: 44px; }
+.avatar-orb { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--grad); }
+
+.typing { display: flex; gap: 5px; padding: 14px 16px; }
+.typing i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text);
+  animation: dots 1.2s infinite;
+}
+.typing i:nth-child(2) { animation-delay: .15s; }
+.typing i:nth-child(3) { animation-delay: .3s; }
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: var(--a2);
+  animation: blink 1s steps(1) infinite;
+}
+
+.chat__input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  padding: 12px 14px 12px 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  font: 400 14px/1 var(--ff-b);
+  color: var(--text2);
+}
+
+/* ---------- График ---------- */
+.chart__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.chart__val { flex: none; text-align: right; }
+.chart__num { font: 700 clamp(24px, 2vw, 34px)/1 var(--ff-h); letter-spacing: -.03em; }
+.chart__delta { margin-top: 6px; font: 500 13px/1 var(--ff-b); color: var(--success); }
+.chart__delta.is-down { color: var(--danger); }
+.chart__svg { width: 100%; height: 130px; overflow: visible; }
+.chart__svg path { transition: d .8s var(--ease); }
+
+/* ---------- Задачи (drag & drop) ---------- */
+.board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.board__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 170px;
+  padding: 12px;
+  border-radius: var(--r-md);
+  border-style: dashed;
+  transition: background .2s, border-color .2s;
+}
+.board__col--done { background: rgba(75, 227, 154, .06); border: 1px dashed rgba(75, 227, 154, .3); }
+.board__col.is-over { border-color: var(--a1); background: rgba(124, 92, 255, .08); }
+.board__label {
+  padding: 4px 4px 6px;
+  font: 600 12px/1 var(--ff-b);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.task {
+  display: flex;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-b);
+  background: var(--glass);
+  font: 500 14px/1.3 var(--ff-b);
+  text-align: left;
+  cursor: grab;
+  animation: cardIn .45s var(--spring);
+  transition: transform .2s var(--spring), opacity .2s;
+}
+.task:active { transform: scale(.97); cursor: grabbing; }
+.task.is-dragging { opacity: .4; }
+@media (hover: hover) { .task:hover { transform: translateY(-2px); } }
+.board__col--done .task {
+  border-color: rgba(75, 227, 154, .3);
+  background: rgba(75, 227, 154, .08);
+  color: var(--text2);
+  text-decoration: line-through;
+}
+.board__col--done .task::before { content: "✓"; color: var(--success); text-decoration: none; display: inline-block; }
+
+/* ---------- Переводчик ---------- */
+.langs { display: flex; flex-wrap: wrap; gap: 6px; }
+.lang {
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--glass-b);
+  font: 600 12px/1 var(--ff-b);
+  letter-spacing: .06em;
+  color: var(--text2);
+  transition: background .4s, color .4s;
+}
+.lang.is-active { background: var(--text); color: var(--bg); }
+
+.phrases {
+  display: grid;
+  align-items: center;
+  min-height: 96px;
+  padding: 16px 18px;
+}
+.phrase {
+  grid-area: 1 / 1;
+  font: 500 var(--fs-bodyl)/1.4 var(--ff-b);
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(8px);
+  transition: opacity .6s var(--ease), filter .6s var(--ease), transform .6s var(--ease);
+}
+.phrase.is-active { opacity: 1; filter: blur(0); transform: none; }
+
+/* ---------- Конспекты встреч ---------- */
+.rec { display: flex; align-items: center; gap: 10px; font: 500 13px/1 var(--ff-b); color: var(--text2); }
+.rec::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--a3); animation: pulse 1.4s infinite; }
+
+.wave { display: flex; align-items: center; gap: 3px; height: 64px; }
+.wave span {
+  flex: 1;
+  height: var(--h);
+  border-radius: 3px;
+  background: var(--grad);
+  background-size: 3000% 100%;
+  background-position: var(--bp) 0;
+  animation: wave var(--dur) ease-in-out var(--d) infinite;
+}
+
+/* ---------- Автоматизации ---------- */
+.autos { display: flex; flex-direction: column; gap: 8px; }
+.auto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 8px 0 16px;
+  border-radius: 16px;
+  font: 500 15px/1.3 var(--ff-b);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ---------- Раскладка ---------- */
+@media (min-width: 768px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card--chat,
+  .card--auto { grid-column: span 2; }
+}
+
+@media (min-width: 1024px) {
+  .bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .card--chat  { grid-column: span 3; grid-row: span 2; }
+  .card--chart,
+  .card--tasks { grid-column: span 3; }
+  .card--tr,
+  .card--meet,
+  .card--auto  { grid-column: span 2; }
+}

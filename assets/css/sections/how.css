@@ -1,0 +1,194 @@
+/* ==========================================================================
+   «Как это работает»: sticky-скроллтеллинг (ПК) / карусель со свайпом (мобайл)
+   ========================================================================== */
+
+.how {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 96px);
+  align-items: start;
+}
+
+.how__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Макет интерфейса */
+.mock {
+  width: 100%;
+  max-width: min(100%, 560px, 70vh);
+  aspect-ratio: 4 / 3.2;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--glass-inset), 0 40px 80px -40px rgba(124, 92, 255, .5);
+}
+.mock__bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  font: 500 12px/1 var(--ff-b);
+  color: var(--text2);
+}
+.mock__bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--glass-b); }
+.mock__bar span { margin-left: 10px; }
+
+.mock__body { flex: 1; min-height: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); }
+.mock__side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-right: 1px solid var(--line);
+}
+.mock__side i { width: 28px; height: 28px; border-radius: 9px; background: var(--glass-b); transition: background .4s; }
+.mock__side i.is-active { background: var(--grad); }
+
+.mock__main { min-width: 0; padding: clamp(16px, 2vw, 28px); overflow: hidden; }
+.mock__screen {
+  view-transition-name: mock-main;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mock__screen[hidden] { display: none; }
+.mock__title {
+  view-transition-name: mock-title;
+  font: 700 clamp(16px, 1.3vw, 22px)/1.2 var(--ff-h);
+}
+.mock__muted { font: 400 14px/1.45 var(--ff-b); color: var(--text2); }
+
+.integ {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  font: 500 14px/1.2 var(--ff-b);
+}
+.integ i { flex: none; width: 26px; height: 26px; border-radius: 8px; background: var(--c); }
+.integ span { flex: 1; min-width: 0; }
+.integ b {
+  padding: 6px 9px;
+  border-radius: var(--r-pill);
+  background: rgba(75, 227, 154, .14);
+  color: var(--success);
+  font: 600 11px/1 var(--ff-b);
+}
+
+.mock__big { font: 800 clamp(32px, 3.4vw, 56px)/1 var(--ff-h); letter-spacing: -.04em; }
+.progress { height: 8px; border-radius: var(--r-pill); background: var(--glass-b); overflow: hidden; }
+.progress i { display: block; width: 72%; height: 100%; border-radius: inherit; background: var(--grad); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.bars { display: flex; align-items: flex-end; gap: 8px; height: 88px; }
+.bars i { flex: 1; height: var(--h); border-radius: 6px; background: var(--glass-b); }
+.bars i:last-child { background: var(--grad); }
+.mock__pill {
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  background: var(--grad);
+  color: var(--on-accent);
+  font: 600 13px/1 var(--ff-b);
+}
+
+/* Шаги */
+.how__steps { position: relative; min-width: 0; }
+.how__line { display: none; }
+
+.steps {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 calc(var(--pad) * -1);
+  padding: 0 var(--pad);
+}
+.step {
+  flex: 0 0 86%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  border-radius: var(--r-lg);
+  scroll-snap-align: center;
+  opacity: .6;
+  transition: opacity .5s var(--ease);
+}
+.step.is-active { opacity: 1; }
+.step__n { align-self: flex-start; font: 700 var(--fs-cap)/1 var(--ff-h); letter-spacing: .04em; }
+.step__title { font: 700 var(--fs-h3)/1.2 var(--ff-h); letter-spacing: -.03em; }
+.step__text { max-width: 40ch; font: 400 var(--fs-bodyl)/1.55 var(--ff-b); color: var(--text2); text-wrap: pretty; }
+
+.dots { display: flex; justify-content: center; gap: 4px; margin-top: 12px; }
+.dots button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.dots button::after {
+  content: "";
+  width: 8px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--glass-b);
+  transition: width .4s var(--spring), background .4s;
+}
+.dots button[aria-current="true"]::after { width: 28px; background: var(--grad); }
+
+@media (min-width: 1024px) {
+  .how { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .how__stage { position: sticky; top: 14vh; height: 72vh; }
+  .mock { max-width: 100%; }
+
+  .how__steps { padding-left: 56px; }
+  .how__line {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--line);
+  }
+  .how__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: var(--grad-v);
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+  .steps { display: block; overflow: visible; margin: 0; padding: 0; }
+  .step {
+    min-height: 72vh;
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    opacity: .3;
+  }
+  .dots { display: none; }
+}

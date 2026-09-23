@@ -1,0 +1,162 @@
+/* ==========================================================================
+   FAQ (нативный <details> + interpolate-size), финальный CTA, подвал
+   ========================================================================== */
+
+/* ---------- FAQ ---------- */
+.faq { display: flex; flex-direction: column; }
+
+.faq__item { border-bottom: 1px solid var(--glass-b); }
+
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+  padding: 18px 0;
+  font: 600 var(--fs-bodyl)/1.35 var(--ff-b);
+  cursor: pointer;
+  list-style: none;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-b);
+  font: 400 24px/1 var(--ff-b);
+  transition: transform .45s var(--spring), background .3s;
+}
+.faq__item[open] .faq__icon { transform: rotate(135deg); background: var(--glass-b); }
+
+.faq__a {
+  max-width: 68ch;
+  padding: 0 56px 24px 0;
+  font: 400 var(--fs-body)/1.6 var(--ff-b);
+  color: var(--text2);
+}
+
+/* Плавное раскрытие до height:auto (Chrome 131+, остальные — мгновенно) */
+.faq__item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size .5s var(--ease), content-visibility .5s allow-discrete;
+}
+.faq__item[open]::details-content { block-size: auto; }
+
+/* ---------- Финальный CTA ---------- */
+.cta { overflow: hidden; }
+.cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(28px, 3vw, 48px);
+  text-align: center;
+}
+.cta__title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: .22em;
+  font: 800 clamp(46px, 7.6vw, 240px)/.98 var(--ff-h);
+  letter-spacing: -.05em;
+}
+.cta__word { display: inline-flex; }
+.cta__letter { display: inline-block; will-change: transform; }
+.cta__word--grad .cta__letter {
+  padding-bottom: .06em;
+  background: var(--grad);
+  background-size: 700% 100%;
+  background-position: var(--bp, 0) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.cta__sub { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cta__note { font: 400 var(--fs-cap)/1.4 var(--ff-b); color: var(--text2); }
+
+/* ---------- Подвал ---------- */
+.footer {
+  position: relative;
+  padding-top: clamp(48px, 6vw, 96px);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 48px) var(--gut);
+}
+.footer__sub {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 420px;
+}
+.footer__sub-title { font: 700 var(--fs-bodyl)/1.3 var(--ff-h); letter-spacing: -.02em; }
+.footer__sub button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  border: 0;
+  background: var(--text);
+  color: var(--bg);
+  font: 600 14px/1 var(--ff-b);
+  cursor: pointer;
+}
+.footer__status { min-height: 1.4em; font: 500 14px/1.4 var(--ff-b); color: var(--success); }
+.footer__status.is-error { color: var(--danger); }
+.socials { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.footer__col { display: flex; flex-direction: column; gap: 4px; }
+.footer__col-title {
+  margin-bottom: 8px;
+  font: 500 var(--fs-cap)/1.4 var(--ff-b);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.footer__col a { display: flex; align-items: center; min-height: 44px; font: 400 var(--fs-body)/1.3 var(--ff-b); }
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: clamp(40px, 5vw, 80px);
+  font: 400 var(--fs-cap)/1.4 var(--ff-b);
+  color: var(--text2);
+}
+
+/* Большой логотип, обрезанный краем экрана */
+.footer__giant {
+  height: min(13.5vw, 520px);
+  margin-top: clamp(16px, 2vw, 32px);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.footer__giant span {
+  font: 800 min(28vw, 1080px)/.78 var(--ff-h);
+  letter-spacing: -.06em;
+  background: linear-gradient(180deg, var(--text) 0%, color-mix(in oklab, var(--text) 10%, transparent) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: .9;
+}
+
+@media (min-width: 768px) {
+  .footer__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .footer__grid { grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr)); }
+  .footer__sub { grid-column: auto; }
+  .footer__col a { min-height: 36px; }
+}

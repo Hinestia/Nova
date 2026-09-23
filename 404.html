@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Страница не найдена — Nova AI</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07070C">
+  <script>
+    (function () {
+      var t; try { t = localStorage.getItem('nova-theme'); } catch (e) {}
+      if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <style>
+    .nf {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: var(--pad);
+      overflow: hidden;
+      text-align: center;
+    }
+    .nf__glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(40% 40% at 50% 45%, rgba(124, 92, 255, .3), transparent 70%),
+        radial-gradient(30% 30% at 70% 70%, rgba(255, 92, 170, .14), transparent 70%);
+    }
+    .nf__inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .nf__code {
+      font: 800 clamp(120px, 28vw, 360px)/.8 var(--ff-h);
+      letter-spacing: -.06em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nf__title { font: 700 var(--fs-h3)/1.2 var(--ff-h); letter-spacing: -.03em; }
+    .nf__text { max-width: 40ch; font: 400 var(--fs-bodyl)/1.55 var(--ff-b); color: var(--text2); }
+    .nf__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  </style>
+</head>
+<body>
+  <main class="nf">
+    <div class="nf__glow" aria-hidden="true"></div>
+    <div class="nf__inner">
+      <span class="nf__code" aria-hidden="true">404</span>
+      <h1 class="nf__title">Такой страницы нет</h1>
+      <p class="nf__text">Возможно, ссылка устарела или в адресе опечатка. Начните с главной — там всё про Nova.</p>
+      <div class="nf__actions">
+        <a class="btn btn--primary" href="./">На главную</a>
+        <a class="btn btn--glass" href="./#faq">Частые вопросы</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Дизайн-токены
+   Цвета, шрифты, кривые, fluid-типографика и 12-колоночная сетка из ТЗ.
+   Компоненты используют только переменные — цвета не «зашиты».
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* Палитра — тёмная тема (основная) */
+  --bg: #07070C;
+  --surface: #11111A;
+  --glass: rgba(255, 255, 255, .06);
+  --glass-b: rgba(255, 255, 255, .10);
+  --glass-hi: rgba(255, 255, 255, .14);
+  --text: #F2F2F7;
+  --text2: #8A8A9E;
+  --line: rgba(255, 255, 255, .08);
+  --scrim: rgba(7, 7, 12, .55);
+  --on-accent: #07070C;
+
+  /* Акценты */
+  --a1: #7C5CFF;
+  --a2: #3DD6FF;
+  --a3: #FF5CAA;
+  --success: #4BE39A;
+  --danger: #FF7A9C;
+  --star: #FFC857;
+  --grad: linear-gradient(100deg, #7C5CFF 0%, #3DD6FF 50%, #FF5CAA 100%);
+  --grad-v: linear-gradient(180deg, #7C5CFF, #3DD6FF 50%, #FF5CAA);
+
+  /* Движение */
+  --ease: cubic-bezier(.22, 1, .36, 1);      /* ease-out-quint — появление */
+  --spring: cubic-bezier(.34, 1.56, .64, 1); /* пружина — кнопки и модалки */
+
+  /* Шрифты */
+  --ff-h: 'Unbounded', system-ui, sans-serif;
+  --ff-b: 'Onest', system-ui, sans-serif;
+
+  /* Fluid-типографика: мобильный → десктоп → ТВ (clamp, без скачков) */
+  --fs-h1: clamp(40px, 20.3px + 5.26vw, 128px);
+  --fs-h2: clamp(30px, 20.85px + 2.44vw, 72px);
+  --fs-h3: clamp(22px, 18.5px + .94vw, 40px);
+  --fs-bodyl: clamp(17px, 15.9px + .28vw, 26px);
+  --fs-body: clamp(16px, 15.65px + .094vw, 22px);
+  --fs-cap: clamp(13px, 12.65px + .094vw, 18px);
+  --fs-card-h: clamp(20px, 1.6vw, 28px);
+
+  /* Сетка: поля, gutter, максимальная ширина контента */
+  --pad: 16px;
+  --gut: 12px;
+  --maxw: 100%;
+  --sec: clamp(64px, 10vw, 160px);
+
+  /* Радиусы */
+  --r-xl: 28px;
+  --r-lg: 24px;
+  --r-md: 18px;
+  --r-pill: 999px;
+
+  /* Эффекты стекла */
+  --blur: blur(24px) saturate(150%);
+  --glass-inset: inset 0 1px 0 var(--glass-hi);
+
+  interpolate-size: allow-keywords;
+}
+
+/* Светлая тема (дополнительная) */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F3F2F7;
+  --surface: #FFFFFF;
+  --glass: rgba(255, 255, 255, .62);
+  --glass-b: rgba(20, 20, 40, .09);
+  --glass-hi: rgba(255, 255, 255, .95);
+  --text: #0C0C16;
+  --text2: #555566;
+  --line: rgba(12, 12, 22, .08);
+  --scrim: rgba(30, 30, 50, .35);
+}
+
+/* Брейкпоинты из ТЗ (mobile-first) */
+@media (min-width: 375px)  { :root { --pad: 20px; --gut: 16px; } }
+@media (min-width: 768px)  { :root { --pad: 32px; --gut: 20px; } }
+@media (min-width: 1024px) { :root { --pad: 48px; --gut: 24px; --maxw: 1200px; } }
+@media (min-width: 1440px) { :root { --pad: 64px; --gut: 24px; --maxw: 1320px; } }
+@media (min-width: 1920px) {
+  :root { --pad: 80px; --gut: 32px; --maxw: 1560px; --fs-body: 19px; --fs-bodyl: 22px; --fs-cap: 15px; }
+}
+@media (min-width: 2560px) {
+  :root { --pad: 5vw; --gut: 40px; --maxw: 1920px; --fs-body: 22px; --fs-bodyl: 26px; --fs-cap: 18px; }
+}

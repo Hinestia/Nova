@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Демо-зона «Спроси Nova»: вращающаяся conic-рамка, посимвольный ответ
+   ========================================================================== */
+
+.ask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(24px, 3vw, 40px);
+}
+.ask .section-head { margin-bottom: 0; }
+
+.ask__frame {
+  position: relative;
+  width: 100%;
+  padding: 1.5px;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(124, 92, 255, .55);
+}
+.ask__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150vmax;
+  height: 150vmax;
+  margin: -75vmax 0 0 -75vmax;
+  background: conic-gradient(from 0deg, #7C5CFF, #3DD6FF, #FF5CAA, #7C5CFF 60%, transparent 70%, #7C5CFF);
+  animation: spin 6s linear infinite;
+}
+.ask__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(16px, 2vw, 28px);
+  border-radius: 26.5px;
+  background: var(--surface);
+}
+
+.ask__form { padding: 6px 6px 6px 18px; }
+.ask__form input { height: 48px; padding: 0; font: 400 var(--fs-body)/1 var(--ff-b); }
+.ask__send {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--grad);
+  color: var(--on-accent);
+  font: 700 18px/1 var(--ff-b);
+  cursor: pointer;
+  transition: transform .25s var(--spring), opacity .2s;
+}
+.ask__send:active { transform: scale(.92); }
+.ask__send:disabled { opacity: .5; cursor: default; }
+
+.ask__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.ask__answer {
+  display: flex;
+  gap: 12px;
+  min-height: 150px;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+}
+.ask__orb { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--grad); }
+.ask__answer.is-busy .ask__orb { animation: pulse 1s ease-in-out infinite; }
+.ask__text { flex: 1; min-width: 0; font: 400 var(--fs-body)/1.6 var(--ff-b); white-space: pre-wrap; }
+.ask__hint { color: var(--text2); }
+.ask__text .caret { display: none; height: 1.1em; vertical-align: -3px; }
+.ask__answer.is-busy .caret { display: inline-block; }
+
+/* ТВ: демо-зона только с чипсами-подсказками */
+@media (min-width: 1800px) and (hover: none) {
+  .ask__form { display: none; }
+}

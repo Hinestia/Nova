@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nova AI — AI-ассистент для команд</title>
+  <meta name="description" content="Nova — AI-ассистент, который берёт на себя рутину команды: чат, задачи, отчёты, конспекты встреч и перевод. 14 дней бесплатно.">
+  <meta name="theme-color" content="#07070C">
+  <meta name="color-scheme" content="dark light">
+  <link rel="canonical" href="https://nova-ai.example/">
+
+  <!-- Тема применяется до отрисовки, чтобы не было вспышки -->
+  <script>
+    (function () {
+      var t;
+      try { t = localStorage.getItem('nova-theme'); } catch (e) {}
+      if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+
+  <!-- Open Graph / соцсети -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nova AI">
+  <meta property="og:title" content="Nova AI — ваша команда в 10 раз быстрее">
+  <meta property="og:description" content="AI-ассистент для команд. 14 дней бесплатно.">
+  <meta property="og:image" content="assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Иконки -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <!-- Шрифты: предзагрузка критичных субсетов -->
+  <link rel="preload" href="assets/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Стили (порядок важен: токены → база → компоненты → секции → модалки) -->
+  <link rel="stylesheet" href="assets/css/fonts.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections/header.css">
+  <link rel="stylesheet" href="assets/css/sections/hero.css">
+  <link rel="stylesheet" href="assets/css/sections/logos.css">
+  <link rel="stylesheet" href="assets/css/sections/features.css">
+  <link rel="stylesheet" href="assets/css/sections/how.css">
+  <link rel="stylesheet" href="assets/css/sections/ask.css">
+  <link rel="stylesheet" href="assets/css/sections/stats-reviews.css">
+  <link rel="stylesheet" href="assets/css/sections/pricing.css">
+  <link rel="stylesheet" href="assets/css/sections/faq-cta-footer.css">
+  <link rel="stylesheet" href="assets/css/modals.css">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Nova AI",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI-ассистент для команд: чат, задачи, отчёты, конспекты встреч и перевод.",
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "12000" },
+    "offers": { "@type": "AggregateOffer", "lowPrice": "630", "highPrice": "2990", "priceCurrency": "RUB" }
+  }
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Сколько длится пробный период?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "14 дней со всеми функциями тарифа «Команда». Банковская карта не нужна, после окончания периода аккаунт не списывает деньги автоматически."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Где хранятся данные?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "В дата-центрах в России. Данные шифруются при передаче и хранении, а Nova не обучается на информации вашей компании."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "С какими сервисами работает Nova?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Почта, календари, трекеры задач, облачные диски и мессенджеры — более 60 интеграций. Список пополняется каждый месяц."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Нужен ли разработчик для настройки?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Нет. Подключение занимает несколько минут, автоматизации настраиваются в визуальном редакторе."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли сменить тариф?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, в любой момент. При переходе на старший тариф разница пересчитывается пропорционально оставшимся дням."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли скидки для НКО и образования?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, 50% на любой тариф. Напишите нам, и мы оформим скидку за один день."
+      }
+    }
+  ]
+}
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <!-- ====================================================== ШАПКА -->
+  <header class="header" data-header>
+    <div class="header__bar">
+      <a class="logo" href="#top" data-scroll-top aria-label="Nova — на главную">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Nova</span>
+      </a>
+
+      <nav class="nav" aria-label="Основное меню">
+        <a class="nav__link" href="#features">Возможности</a>
+        <a class="nav__link" href="#how">Как работает</a>
+        <a class="nav__link" href="#pricing">Тарифы</a>
+        <a class="nav__link" href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="icon-btn" type="button" data-open-palette aria-label="Поиск по сайту (Ctrl+K)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14.5" y2="14.5"/></svg>
+          <span class="kbd-hint" aria-hidden="true" data-kbd>Ctrl K</span>
+        </button>
+        <button class="icon-btn icon-btn--round" type="button" data-theme-toggle aria-label="Включить светлую тему">☾</button>
+        <button class="btn btn--primary btn--sm header__cta" type="button" data-magnetic data-open-trial>Попробовать</button>
+        <button class="burger" type="button" data-burger aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Мобильное меню на весь экран -->
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true" inert>
+    <nav class="mobile-menu__nav" aria-label="Мобильное меню">
+      <a class="mobile-menu__link" href="#features">Возможности</a>
+      <a class="mobile-menu__link" href="#how">Как работает</a>
+      <a class="mobile-menu__link" href="#pricing">Тарифы</a>
+      <a class="mobile-menu__link" href="#faq">FAQ</a>
+    </nav>
+    <button class="btn btn--primary mobile-menu__cta" type="button" data-open-trial>Попробовать бесплатно</button>
+  </div>
+
+  <main id="main">
+
+    <!-- ====================================================== HERO -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <h1 class="hero__title" id="hero-title">
+            <span>Ваша команда.</span>
+            <span>В 10 раз</span>
+            <span class="hero__words" data-words aria-live="polite">
+              <span class="hero__word grad-text is-active">быстрее.</span>
+              <span class="hero__word grad-text" aria-hidden="true">умнее.</span>
+              <span class="hero__word grad-text" aria-hidden="true">спокойнее.</span>
+            </span>
+          </h1>
+          <p class="hero__lead">Nova — AI-ассистент, который берёт на себя рутину: отвечает на вопросы, ведёт задачи, пишет отчёты и переводит прямо в ваших рабочих инструментах.</p>
+          <div class="hero__actions">
+            <button class="btn btn--primary" type="button" data-magnetic data-open-trial>Попробовать бесплатно</button>
+            <button class="btn btn--glass" type="button" data-magnetic data-open-video>Смотреть демо <span aria-hidden="true">▶</span></button>
+          </div>
+          <p class="trust">
+            <span class="trust__stars" aria-hidden="true">★★★★★</span>
+            <span><b>4.9 ★</b> · 12 000 команд</span>
+          </p>
+        </div>
+
+        <div class="sphere" data-sphere>
+          <div class="sphere__halo" aria-hidden="true"></div>
+          <canvas class="sphere__canvas" role="img" aria-label="3D-сфера Nova из светящихся частиц"></canvas>
+          <video class="sphere__media" data-sphere-video muted loop playsinline preload="none" aria-hidden="true" hidden></video>
+          <img class="sphere__media" data-sphere-static src="assets/img/sphere-static.png" alt="" width="900" height="900" decoding="async" hidden>
+          <button class="demo-thumb" type="button" data-open-video data-demo-thumb aria-label="Открыть демо-видео">
+            <span class="demo-thumb__img"><span class="play" aria-hidden="true">▶</span></span>
+            <span class="demo-thumb__text">
+              <span class="demo-thumb__title">Демо за 2 минуты</span>
+              <span class="demo-thumb__sub">Как Nova ведёт спринт</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ЛОГОТИПЫ -->
+    <section class="section logos" aria-label="Клиенты">
+      <p class="logos__title">Нам доверяют команды</p>
+      <div class="marquee">
+        <div class="marquee__track" data-marquee>
+          <span class="brand" style="--brand-c:#9B84FF">Orbita</span>
+          <span class="brand" style="--brand-c:#3DD6FF; --shape:4px">Kvant</span>
+          <span class="brand" style="--brand-c:#FF5CAA; --shape:50% 50% 50% 0">Lumen</span>
+          <span class="brand" style="--brand-c:#FFB547; --shape:3px; --shape-tf:rotate(45deg) scale(.8)">Severa</span>
+          <span class="brand" style="--brand-c:#4BE39A">Polaris</span>
+          <span class="brand" style="--brand-c:#9B84FF; --shape:0">Atlas</span>
+          <span class="brand" style="--brand-c:#3DD6FF; --shape:50% 0">Nordwind</span>
+          <span class="brand" style="--brand-c:#FF5CAA; --shape:4px; --shape-tf:rotate(45deg) scale(.8)">Vektor</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ВОЗМОЖНОСТИ (BENTO) -->
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Возможности</span>
+          <h2 class="h2" id="features-title">Один ассистент вместо десятка вкладок</h2>
+        </header>
+
+        <div class="bento">
+          <!-- 1. Командный чат -->
+          <article class="card card--chat glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="card__head">
+              <h3 class="card__title">Командный чат</h3>
+              <p class="card__text">Спросите что угодно — Nova ответит с учётом задач, документов и переписки команды.</p>
+            </div>
+            <div class="chat inset-panel" data-chat aria-hidden="true">
+              <div class="chat__channel">#команда-продукта</div>
+              <div class="bubble bubble--user" data-chat-user>Собери итоги спринта для команды</div>
+              <div class="chat__row">
+                <span class="avatar-orb"></span>
+                <span class="bubble bubble--bot typing" data-chat-dots hidden><i></i><i></i><i></i></span>
+                <span class="bubble bubble--bot" data-chat-answer hidden><span data-chat-text></span><span class="caret"></span></span>
+              </div>
+              <div class="chat__input">Напишите Nova…<span class="avatar-orb"></span></div>
+            </div>
+          </article>
+
+          <!-- 2. Живая аналитика -->
+          <article class="card card--chart glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="chart__top">
+              <div class="card__head">
+                <h3 class="card__title">Живая аналитика</h3>
+                <p class="card__text">Метрики команды обновляются в реальном времени.</p>
+              </div>
+              <div class="chart__val" aria-live="off">
+                <div class="chart__num" data-chart-val>64%</div>
+                <div class="chart__delta" data-chart-delta>▲ +2.4%</div>
+              </div>
+            </div>
+            <svg class="chart__svg" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="novaLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C5CFF"/><stop offset=".5" stop-color="#3DD6FF"/><stop offset="1" stop-color="#FF5CAA"/></linearGradient>
+                <linearGradient id="novaArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C5CFF" stop-opacity=".35"/><stop offset="1" stop-color="#7C5CFF" stop-opacity="0"/></linearGradient>
+              </defs>
+              <path data-chart-area fill="url(#novaArea)" d=""/>
+              <path data-chart-line fill="none" stroke="url(#novaLine)" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" d=""/>
+            </svg>
+          </article>
+
+          <!-- 3. Задачи (drag & drop) -->
+          <article class="card card--tasks glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="card__head">
+              <h3 class="card__title">Задачи на автопилоте</h3>
+              <p class="card__text">Перетащите карточку или нажмите на неё.</p>
+            </div>
+            <div class="board" data-board>
+              <div class="board__col inset-panel" data-col="todo">
+                <span class="board__label">Сделать · <span data-count-col>3</span></span>
+              </div>
+              <div class="board__col board__col--done" data-col="done">
+                <span class="board__label">Готово · <span data-count-col>1</span></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4. Перевод -->
+          <article class="card card--tr glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="card__head">
+              <h3 class="card__title">Перевод на 38 языков</h3>
+              <p class="card__text">Пишите на своём — коллеги читают на своём.</p>
+            </div>
+            <div class="langs" data-langs aria-hidden="true"></div>
+            <div class="phrases inset-panel" data-phrases></div>
+          </article>
+
+          <!-- 5. Конспекты встреч -->
+          <article class="card card--meet glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="card__head">
+              <h3 class="card__title">Конспекты встреч</h3>
+              <p class="card__text">Nova слушает созвон и присылает решения и задачи.</p>
+            </div>
+            <div class="rec">Запись · 00:14:32</div>
+            <div class="wave" data-wave aria-hidden="true"></div>
+          </article>
+
+          <!-- 6. Автоматизации -->
+          <article class="card card--auto glass" data-card data-spotlight data-reveal tabindex="0">
+            <div class="spotlight" aria-hidden="true"></div>
+            <div class="card__head">
+              <h3 class="card__title">Автоматизации без кода</h3>
+              <p class="card__text">Включите сценарий — Nova сделает остальное.</p>
+            </div>
+            <div class="autos">
+              <button class="auto inset-panel" type="button" role="switch" aria-checked="true" data-switch><span>Ежедневный отчёт в 9:00</span><span class="switch" aria-hidden="true"></span></button>
+              <button class="auto inset-panel" type="button" role="switch" aria-checked="false" data-switch><span>Напоминать о дедлайнах</span><span class="switch" aria-hidden="true"></span></button>
+              <button class="auto inset-panel" type="button" role="switch" aria-checked="true" data-switch><span>Разбирать входящие</span><span class="switch" aria-hidden="true"></span></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== КАК ЭТО РАБОТАЕТ -->
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Как это работает</span>
+          <h2 class="h2" id="how-title">Три шага до команды, которая успевает</h2>
+        </header>
+
+        <div class="how">
+          <div class="how__stage">
+            <div class="mock glass" aria-hidden="true">
+              <div class="mock__bar"><i></i><i></i><i></i><span>Nova — рабочее пространство</span></div>
+              <div class="mock__body">
+                <div class="mock__side" data-mock-nav><i class="is-active"></i><i></i><i></i><i></i></div>
+                <div class="mock__main">
+                  <div class="mock__screen" data-mock="0">
+                    <h4 class="mock__title">Интеграции</h4>
+                    <div class="integ" style="--c:#7C5CFF"><i></i><span>Почта</span><b>Подключено</b></div>
+                    <div class="integ" style="--c:#3DD6FF"><i></i><span>Календарь</span><b>Подключено</b></div>
+                    <div class="integ" style="--c:#FF5CAA"><i></i><span>Трекер задач</span><b>Подключено</b></div>
+                    <div class="integ" style="--c:#FFB547"><i></i><span>Облачный диск</span><b>Подключено</b></div>
+                  </div>
+                  <div class="mock__screen" data-mock="1" hidden>
+                    <h4 class="mock__title">Изучаю контекст</h4>
+                    <div class="mock__big grad-text">12 480</div>
+                    <p class="mock__muted">документов, писем и задач проиндексировано</p>
+                    <div class="progress"><i></i></div>
+                    <div class="tags"><span class="tag">Регламенты</span><span class="tag">Проекты</span><span class="tag">Клиенты</span><span class="tag">Встречи</span></div>
+                  </div>
+                  <div class="mock__screen" data-mock="2" hidden>
+                    <h4 class="mock__title">Итоги недели</h4>
+                    <div class="bars"><i style="--h:45%"></i><i style="--h:62%"></i><i style="--h:54%"></i><i style="--h:78%"></i><i style="--h:100%"></i></div>
+                    <p class="mock__muted">Закрыто 24 задачи · скорость +12% · риск: API платежей</p>
+                    <span class="mock__pill">Отправить команде</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="how__steps" data-how>
+            <div class="how__line" aria-hidden="true"><div class="how__fill" data-how-fill></div></div>
+            <ol class="steps" data-scroller data-steps role="list">
+              <li class="step glass is-active" data-step="0">
+                <span class="step__n grad-text">01</span>
+                <h3 class="step__title">Подключите инструменты</h3>
+                <p class="step__text">Почта, календарь, трекер и диск подключаются за пару кликов. Никаких скриптов и долгих внедрений.</p>
+              </li>
+              <li class="step glass" data-step="1">
+                <span class="step__n grad-text">02</span>
+                <h3 class="step__title">Nova изучает контекст</h3>
+                <p class="step__text">Ассистент читает документы и переписку команды, чтобы отвечать с учётом ваших процессов. Данные остаются вашими.</p>
+              </li>
+              <li class="step glass" data-step="2">
+                <span class="step__n grad-text">03</span>
+                <h3 class="step__title">Получайте результат</h3>
+                <p class="step__text">Отчёты, конспекты, ответы и напоминания появляются там, где вы работаете, без переключения вкладок.</p>
+              </li>
+            </ol>
+            <div class="dots" data-step-dots>
+              <button type="button" aria-label="Шаг 1" aria-current="true"></button>
+              <button type="button" aria-label="Шаг 2"></button>
+              <button type="button" aria-label="Шаг 3"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== СПРОСИ NOVA -->
+    <section class="section" id="ask" aria-labelledby="ask-title">
+      <div class="container container--narrow ask">
+        <header class="section-head section-head--center" data-reveal>
+          <span class="eyebrow">Демо</span>
+          <h2 class="h2" id="ask-title">Спроси Nova</h2>
+          <p class="lead">Выберите подсказку и посмотрите, как отвечает ассистент.</p>
+        </header>
+
+        <div class="ask__frame" data-reveal>
+          <div class="ask__ring" aria-hidden="true"></div>
+          <div class="ask__inner" data-ask>
+            <form class="pill-form ask__form" data-ask-form>
+              <label class="visually-hidden" for="ask-input">Вопрос для Nova</label>
+              <input id="ask-input" name="q" placeholder="Спросите Nova о чём угодно…" autocomplete="off">
+              <button class="ask__send" type="submit" data-magnetic aria-label="Отправить">↑</button>
+            </form>
+            <div class="ask__chips" data-ask-chips></div>
+            <div class="ask__answer" data-ask-answer aria-live="polite">
+              <span class="ask__orb" aria-hidden="true"></span>
+              <div class="ask__text"><span class="ask__hint" data-ask-hint>Ответ появится здесь.</span><span data-ask-out></span><span class="caret" aria-hidden="true"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ЦИФРЫ -->
+    <section class="section" aria-label="Nova в цифрах">
+      <div class="container stats">
+        <div class="stat" data-reveal>
+          <span class="stat__num"><span data-count="12000" data-dec="0">12 000</span>+</span>
+          <span class="stat__label">команд работают с Nova</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__num"><span data-count="3.2" data-dec="1">3,2</span> ч</span>
+          <span class="stat__label">экономии в день на сотрудника</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__num"><span data-count="38" data-dec="0">38</span></span>
+          <span class="stat__label">языков перевода</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__num"><span data-count="99.9" data-dec="1">99,9</span>%</span>
+          <span class="stat__label">доступность сервиса</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ОТЗЫВЫ -->
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Отзывы</span>
+          <h2 class="h2" id="reviews-title">Команды, которые перестали тонуть в рутине</h2>
+        </header>
+      </div>
+      <div class="reviews">
+        <div class="reviews__row" data-reviews-row>
+          <figure class="review">
+            <blockquote>Отчёты по спринту теперь собираются сами. Я наконец занимаюсь продуктом, а не таблицами.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#9B84FF" aria-hidden="true">АЛ</span><span class="review__who"><span class="review__name">Анна Лебедева</span><span class="review__role">Продакт-менеджер, Orbita</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Внедрили за день. Через неделю Nova знала наши процессы лучше новичков.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#3DD6FF" aria-hidden="true">ИС</span><span class="review__who"><span class="review__name">Игорь Семёнов</span><span class="review__role">CTO, Kvant</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Перевод переписки с партнёрами из Японии в реальном времени. Это экономит нам недели.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#FF8CC4" aria-hidden="true">МК</span><span class="review__who"><span class="review__name">Мария Ким</span><span class="review__role">BD-директор, Lumen</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Конспекты созвонов экономят мне по часу в день.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#FFC857" aria-hidden="true">ДО</span><span class="review__who"><span class="review__name">Дмитрий Орлов</span><span class="review__role">Руководитель продаж, Severa</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Поддержка отвечает в три раза быстрее, а клиенты довольнее.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#4BE39A" aria-hidden="true">ЕВ</span><span class="review__who"><span class="review__name">Екатерина Власова</span><span class="review__role">Head of Support, Polaris</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Один инструмент вместо пяти подписок. Финдиректор счастлив.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#9B84FF" aria-hidden="true">АГ</span><span class="review__who"><span class="review__name">Артём Гусев</span><span class="review__role">Основатель, Atlas</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Nova напоминает о дедлайнах так деликатно, что никто не обижается.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#3DD6FF" aria-hidden="true">ОН</span><span class="review__who"><span class="review__name">Ольга Никитина</span><span class="review__role">PM, Nordwind</span></span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote>Онбординг новых сотрудников сократился с месяца до недели.</blockquote>
+            <figcaption><span class="review__ava" style="--ava:#FF8CC4" aria-hidden="true">ПЗ</span><span class="review__who"><span class="review__name">Павел Зуев</span><span class="review__role">HR-директор, Vektor</span></span></figcaption>
+          </figure>
+        </div>
+        <div class="reviews__row reviews__row--reverse" data-reviews-row="reverse" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ТАРИФЫ -->
+    <section class="section" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <header class="section-head section-head--center" data-reveal>
+          <span class="eyebrow">Тарифы</span>
+          <h2 class="h2" id="pricing-title">Прозрачные цены, 14 дней бесплатно</h2>
+          <div class="segmented" role="radiogroup" aria-label="Период оплаты" data-period data-value="month">
+            <span class="segmented__knob" aria-hidden="true"></span>
+            <button type="button" role="radio" aria-checked="true" data-value="month">Месяц</button>
+            <button type="button" role="radio" aria-checked="false" data-value="year">Год −20%</button>
+          </div>
+        </header>
+
+        <div class="plans" data-scroller data-plans>
+          <article class="plan" data-reveal>
+            
+            <div class="plan__body">
+              <div class="plan__head">
+                <h3 class="plan__name">Старт</h3>
+                <p class="plan__desc">Для небольших команд до 10 человек</p>
+              </div>
+              <div class="price">
+                <div class="price__value"><span data-price data-month="790" data-year="630">790</span><span class="price__cur">₽</span></div>
+                <span class="price__per" data-price-per>за пользователя в месяц</span>
+              </div>
+              <button class="btn btn--glass" type="button" data-magnetic data-open-trial>Начать бесплатно</button>
+              <ul class="plan__features"><li>Чат-ассистент и перевод</li><li>5 интеграций</li><li>История за 30 дней</li><li>Поддержка по почте</li></ul>
+            </div>
+          </article>
+          <article class="plan plan--popular" data-reveal>
+            <span class="plan__badge">Популярный</span>
+            <div class="plan__body">
+              <div class="plan__head">
+                <h3 class="plan__name">Команда</h3>
+                <p class="plan__desc">Для растущих команд и отделов</p>
+              </div>
+              <div class="price">
+                <div class="price__value"><span data-price data-month="1 490" data-year="1 190">1 490</span><span class="price__cur">₽</span></div>
+                <span class="price__per" data-price-per>за пользователя в месяц</span>
+              </div>
+              <button class="btn btn--primary" type="button" data-magnetic data-open-trial>Попробовать 14 дней</button>
+              <ul class="plan__features"><li>Всё из «Старт»</li><li>Конспекты встреч и отчёты</li><li>Безлимит интеграций</li><li>Автоматизации без кода</li><li>Приоритетная поддержка</li></ul>
+            </div>
+          </article>
+          <article class="plan" data-reveal>
+            
+            <div class="plan__body">
+              <div class="plan__head">
+                <h3 class="plan__name">Бизнес</h3>
+                <p class="plan__desc">Для компаний с особыми требованиями</p>
+              </div>
+              <div class="price">
+                <div class="price__value"><span data-price data-month="2 990" data-year="2 390">2 990</span><span class="price__cur">₽</span></div>
+                <span class="price__per" data-price-per>за пользователя в месяц</span>
+              </div>
+              <button class="btn btn--glass" type="button" data-magnetic data-open-trial>Связаться с нами</button>
+              <ul class="plan__features"><li>Всё из «Команда»</li><li>SSO и роли доступа</li><li>Хранение данных в РФ</li><li>Выделенный менеджер</li><li>SLA 99,9%</li></ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== FAQ -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container container--narrow">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">FAQ</span>
+          <h2 class="h2" id="faq-title">Частые вопросы</h2>
+        </header>
+        <div class="faq" data-faq>
+          <details class="faq__item" name="faq" open>
+            <summary class="faq__q"><span>Сколько длится пробный период?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">14 дней со всеми функциями тарифа «Команда». Банковская карта не нужна, после окончания периода аккаунт не списывает деньги автоматически.</p>
+          </details>
+          <details class="faq__item" name="faq">
+            <summary class="faq__q"><span>Где хранятся данные?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">В дата-центрах в России. Данные шифруются при передаче и хранении, а Nova не обучается на информации вашей компании.</p>
+          </details>
+          <details class="faq__item" name="faq">
+            <summary class="faq__q"><span>С какими сервисами работает Nova?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">Почта, календари, трекеры задач, облачные диски и мессенджеры — более 60 интеграций. Список пополняется каждый месяц.</p>
+          </details>
+          <details class="faq__item" name="faq">
+            <summary class="faq__q"><span>Нужен ли разработчик для настройки?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">Нет. Подключение занимает несколько минут, автоматизации настраиваются в визуальном редакторе.</p>
+          </details>
+          <details class="faq__item" name="faq">
+            <summary class="faq__q"><span>Можно ли сменить тариф?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">Да, в любой момент. При переходе на старший тариф разница пересчитывается пропорционально оставшимся дням.</p>
+          </details>
+          <details class="faq__item" name="faq">
+            <summary class="faq__q"><span>Есть ли скидки для НКО и образования?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+            <p class="faq__a">Да, 50% на любой тариф. Напишите нам, и мы оформим скидку за один день.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ФИНАЛЬНЫЙ CTA -->
+    <section class="section cta" aria-labelledby="cta-title" data-cta>
+      <div class="container cta__inner">
+        <h2 class="cta__title" id="cta-title" aria-label="Начните сегодня">
+          <span class="cta__word" data-cta-word="Начните" aria-hidden="true">Начните</span>
+          <span class="cta__word cta__word--grad" data-cta-word="сегодня" aria-hidden="true">сегодня</span>
+        </h2>
+        <div class="cta__sub">
+          <button class="btn btn--primary btn--lg" type="button" data-magnetic data-open-trial>Попробовать бесплатно</button>
+          <span class="cta__note">14 дней полного доступа. Карта не нужна.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== ПОДВАЛ -->
+    <footer class="footer">
+      <div class="container footer__grid">
+        <div class="footer__sub">
+          <span class="footer__sub-title">Новости продукта раз в месяц</span>
+          <form class="pill-form" data-subscribe novalidate>
+            <label class="visually-hidden" for="sub-email">E-mail для рассылки</label>
+            <input id="sub-email" name="email" type="email" required placeholder="you@company.ru" autocomplete="email">
+            <button type="submit">Подписаться</button>
+          </form>
+          <p class="footer__status" data-subscribe-status role="status"></p>
+          <div class="socials">
+            <a class="pill-link" href="#" rel="noopener">Telegram</a>
+            <a class="pill-link" href="#" rel="noopener">VK</a>
+            <a class="pill-link" href="#" rel="noopener">YouTube</a>
+            <a class="pill-link" href="#" rel="noopener">GitHub</a>
+          </div>
+        </div>
+
+        <nav class="footer__col" aria-label="Продукт">
+          <span class="footer__col-title">Продукт</span>
+          <a href="#features">Возможности</a><a href="#how">Интеграции</a><a href="#pricing">Тарифы</a><a href="#">Обновления</a>
+        </nav>
+        <nav class="footer__col" aria-label="Компания">
+          <span class="footer__col-title">Компания</span>
+          <a href="#">О нас</a><a href="#">Карьера</a><a href="#">Блог</a><a href="#">Контакты</a>
+        </nav>
+        <nav class="footer__col" aria-label="Ресурсы">
+          <span class="footer__col-title">Ресурсы</span>
+          <a href="#">Документация</a><a href="#faq">Справка</a><a href="#">API</a><a href="#">Статус</a>
+        </nav>
+        <nav class="footer__col" aria-label="Правовое">
+          <span class="footer__col-title">Правовое</span>
+          <a href="#">Конфиденциальность</a><a href="#">Условия</a><a href="#">Cookies</a>
+        </nav>
+      </div>
+
+      <div class="container footer__bottom">
+        <span>© 2026 Nova AI</span>
+        <span>Сделано для команд, которые ценят фокус</span>
+      </div>
+      <div class="footer__giant" aria-hidden="true"><span>NOVA</span></div>
+    </footer>
+  </main>
+
+  <!-- ====================================================== МОДАЛКА: ПРОБНЫЙ ПЕРИОД -->
+  <dialog class="modal modal--sheet" id="trial" data-modal="trial" aria-labelledby="trial-title-1">
+    <canvas class="confetti" data-confetti aria-hidden="true"></canvas>
+    <div class="modal__panel" data-sheet>
+      <div class="sheet-handle" data-sheet-handle aria-hidden="true"></div>
+      <button class="icon-btn icon-btn--close" type="button" data-close aria-label="Закрыть">×</button>
+
+      <!-- Шаг 1: e-mail -->
+      <form class="trial-step" data-trial-step="1" novalidate>
+        <span class="trial-kicker">Шаг 1 из 2</span>
+        <h2 class="trial-title" id="trial-title-1">14 дней Nova бесплатно</h2>
+        <p class="trial-text">Все функции тарифа «Команда». Карта не нужна.</p>
+        <label class="field">Рабочий e-mail
+          <input class="input" type="email" name="email" placeholder="name@company.ru" autocomplete="email" aria-describedby="trial-email-err" required>
+        </label>
+        <span class="field-error" id="trial-email-err" role="alert" data-error hidden></span>
+        <button class="btn btn--primary btn--block" type="submit">Продолжить</button>
+      </form>
+
+      <!-- Шаг 2: имя и размер команды -->
+      <form class="trial-step" data-trial-step="2" hidden>
+        <span class="trial-kicker">Шаг 2 из 2 · <span data-trial-email></span></span>
+        <h2 class="trial-title" id="trial-title-2">Расскажите о команде</h2>
+        <label class="field">Как вас зовут
+          <input class="input" name="name" placeholder="Анна" autocomplete="given-name" required>
+        </label>
+        <fieldset class="sizes">
+          <legend>Размер команды</legend>
+          <div class="sizes__grid" role="radiogroup" aria-label="Размер команды" data-sizes>
+            <button class="chip" type="button" role="radio" aria-checked="false">1–10</button>
+            <button class="chip" type="button" role="radio" aria-checked="false">11–50</button>
+            <button class="chip" type="button" role="radio" aria-checked="false">51–200</button>
+            <button class="chip" type="button" role="radio" aria-checked="false">200+</button>
+          </div>
+        </fieldset>
+        <label class="consent">
+          <input type="checkbox" name="consent" required>
+          <span>Согласен на <a href="#">обработку персональных данных</a> и с условиями сервиса</span>
+        </label>
+        <div class="trial-actions">
+          <button class="icon-btn" type="button" data-trial-back aria-label="Назад">←</button>
+          <button class="btn btn--primary" type="submit" data-trial-submit disabled>Создать аккаунт</button>
+        </div>
+      </form>
+
+      <!-- Успех -->
+      <div class="trial-step trial-done" data-trial-step="3" hidden>
+        <svg class="check-anim" width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
+          <defs><linearGradient id="novaCheck" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C5CFF"/><stop offset=".5" stop-color="#3DD6FF"/><stop offset="1" stop-color="#FF5CAA"/></linearGradient></defs>
+          <circle cx="48" cy="48" r="42" fill="none" stroke="url(#novaCheck)" stroke-width="4" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" transform="rotate(-90 48 48)"/>
+          <path d="M30 49 L43 61 L66 36" fill="none" stroke="url(#novaCheck)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="60" stroke-dashoffset="60"/>
+        </svg>
+        <h2 class="trial-title" id="trial-title-3" tabindex="-1">Готово, <span data-trial-name>коллега</span>!</h2>
+        <p class="trial-text">Ссылка для входа отправлена на <span data-trial-email></span>. Пробный период уже начался.</p>
+        <button class="btn btn--glass" type="button" data-close>Отлично</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ====================================================== МОДАЛКА: ДЕМО-ВИДЕО -->
+  <dialog class="modal modal--video" id="video" data-modal="video" aria-label="Демо-видео">
+    <button class="icon-btn icon-btn--close" type="button" data-close aria-label="Закрыть видео">×</button>
+    <div class="video-frame" data-sheet>
+      <div class="video-frame__inner">
+        <span class="play" aria-hidden="true">▶</span>
+        <span class="video-frame__meta">демо-видео · 16:9 · 2:14</span>
+      </div>
+    </div>
+    <span class="video-hint" data-video-hint>Esc — закрыть</span>
+  </dialog>
+
+  <!-- ====================================================== КОМАНДНАЯ ПАЛИТРА -->
+  <dialog class="modal modal--palette modal--sheet" id="palette" data-modal="palette" aria-label="Быстрый поиск">
+    <div class="modal__panel palette" data-sheet>
+      <div class="sheet-handle" data-sheet-handle aria-hidden="true"></div>
+      <div class="palette__search">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14.5" y2="14.5"/></svg>
+        <input type="text" data-palette-input placeholder="Куда перейти?" aria-label="Поиск по разделам" role="combobox" aria-expanded="true" aria-controls="palette-list" autocomplete="off">
+        <span class="kbd">Esc</span>
+      </div>
+      <div class="palette__list" id="palette-list" role="listbox" data-palette-list></div>
+    </div>
+  </dialog>
+
+  <!-- ====================================================== EXIT-INTENT -->
+  <aside class="exit-card" role="dialog" aria-label="Предложение" data-exit hidden>
+    <button class="icon-btn icon-btn--close" type="button" data-exit-close aria-label="Закрыть">×</button>
+    <span class="exit-card__kicker">Уже уходите?</span>
+    <span class="exit-card__title"><span class="grad-text">+14 дней</span> к пробному периоду</span>
+    <span class="exit-card__text">Итого 28 дней Nova бесплатно для всей команды.</span>
+    <button class="btn btn--primary btn--sm" type="button" data-open-trial>Забрать дни</button>
+  </aside>
+
+  <noscript>
+    <style>.reveal-init { opacity: 1 !important; filter: none !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Скрипты: ядро → данные → модули → модалки → точка входа -->
+  <script src="assets/js/core/nova.js" defer></script>
+  <script src="assets/js/data/content.js" defer></script>
+  <script src="assets/js/modules/theme.js" defer></script>
+  <script src="assets/js/modules/header.js" defer></script>
+  <script src="assets/js/modules/hero.js" defer></script>
+  <script src="assets/js/modules/sphere.js" defer></script>
+  <script src="assets/js/modules/cursor.js" defer></script>
+  <script src="assets/js/modules/reveal.js" defer></script>
+  <script src="assets/js/modules/marquee.js" defer></script>
+  <script src="assets/js/modules/bento.js" defer></script>
+  <script src="assets/js/modules/how.js" defer></script>
+  <script src="assets/js/modules/ask.js" defer></script>
+  <script src="assets/js/modules/stats.js" defer></script>
+  <script src="assets/js/modules/pricing.js" defer></script>
+  <script src="assets/js/modules/cta.js" defer></script>
+  <script src="assets/js/modules/subscribe.js" defer></script>
+  <script src="assets/js/modals/modal-manager.js" defer></script>
+  <script src="assets/js/modals/trial.js" defer></script>
+  <script src="assets/js/modals/video.js" defer></script>
+  <script src="assets/js/modals/palette.js" defer></script>
+  <script src="assets/js/modals/exit-intent.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

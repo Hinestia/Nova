@@ -1,0 +1,13 @@
+{
+  "name": "nova-ai-landing",
+  "version": "1.0.0",
+  "description": "Лендинг AI-ассистента Nova — HTML, CSS, JavaScript без фреймворков и сборщиков",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve . -l 5173",
+    "assets": "python3 scripts/render-assets.py",
+    "lighthouse": "npx --yes lighthouse http://localhost:5173 --view"
+  },
+  "keywords": ["landing", "portfolio", "three.js", "view-transitions", "glassmorphism"],
+  "license": "MIT"
+}
